@@ -3,7 +3,6 @@
 
 A personal **Kubernetes homelab** built on an **Intel NUC8i7HNB (Hades Canyon)** using K3s, AWX, and modern DevOps practices.
 
-![Hardware](https://via.placeholder.com/800x200?text=Intel+NUC8i7HNB+Hades+Canyon)
 
 ## Overview
 
@@ -29,7 +28,7 @@ This project transforms a compact but powerful Intel NUC into a self-hosted plat
 | K3s Kubernetes              | ✅ Done    | `kubectl` ready |
 | AWX (Ansible)               | ✅ Done    | `http://awx.nuc8-hades.local` |
 | Storage Management          | ✅ Done    | `/data/` + `local-data` StorageClass |
-| GitOps / Terraform          | In Progress | - |
+| GitOps / Terraform          | In Progress | Q1 (scaffold) + Q2 (full reprovisioning) decisions made. Structure created. |
 
 ## Architecture
 
@@ -67,7 +66,7 @@ nuc8-hades-homelab/
 git clone https://github.com/YOURUSERNAME/nuc8-hades-homelab.git
 cd nuc8-hades-homelab
 
-# Explore the project document
+# Explore the central project document (goals, status, open questions, decisions, roadmap)
 cat NUC8-Hades-Homelab-Project.md
 ```
 ## Roadmap
@@ -89,4 +88,4 @@ This repository serves as both a functional homelab and a portfolio project demo
 - Self-hosted applications to test out as potentila mobile apps
 
 ### Made with ❤️ on Intel NUC8-Hades
-Last updated: $(date)
+Last updated: 2026-06-11

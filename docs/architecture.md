@@ -73,4 +73,4 @@ nuc8-hades-homelab/
 
 
 ----
-Last Updated: $(date)
+Last Updated: 2026-06-11
