@@ -60,8 +60,23 @@ module "base" {
 # ------------------------------------------------------------------
 
 output "base_module_outputs" {
-  description = "Everything the base module is exposing. Look at these after your first apply."
+  description = "Everything the base module is exposing. Look at these after your first apply. (This is a big nested map.)"
   value       = module.base
+}
+
+# These are re-exported at the root level so that the learning instructions
+# in docs/apply.md can use simple commands like:
+#   terraform output node_names
+#   terraform output node_count
+# Without having to dig into base_module_outputs.
+output "node_names" {
+  description = "Names of the nodes visible to Terraform. Good sanity check."
+  value       = module.base.node_names
+}
+
+output "node_count" {
+  description = "How many nodes the Kubernetes provider can see. Should be 1 on your current setup."
+  value       = module.base.node_count
 }
 
 output "learning_note" {
