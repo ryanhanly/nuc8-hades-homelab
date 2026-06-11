@@ -124,6 +124,25 @@ From README + architecture (updated with 2026-06-11 decisions).
 
 ---
 
+## Session Continuity Protocol (for Grok Build resets / memory limits)
+
+Because Grok sessions can reset or lose long context, we follow these rules for reliable continuation:
+
+**At the start of any new Grok session (or after a long break):**
+- Read the dedicated handoff file first: `docs/SESSION-HANDOFF.md`
+- Then read this file (`NUC8-Hades-Homelab-Project.md`) for full decisions and roadmap.
+- Read the current focused learning doc: `docs/apply.md`.
+- Read the README of the active module (currently `terraform/modules/base/README.md`).
+- Ask the user for the most recent terminal output or current state if needed.
+
+**At the end of a productive session:**
+- Update `docs/SESSION-HANDOFF.md` with the latest state and next action.
+- Also update the "Current Focus", "Next Steps", and "Latest Session Handoff" sections in this document if significant progress was made.
+- Commit and push from the Mac so the NUC clone stays in sync.
+- Keep the handoff file concise and actionable.
+
+This protocol (combined with the detailed instructions in `docs/apply.md` and the learning comments in the module READMEs) lets us resume cleanly even after a full session reset.
+
 ## Next Steps
 
 1. Directories and skeleton files created per Q1 (this session).
@@ -135,6 +154,13 @@ From README + architecture (updated with 2026-06-11 decisions).
 
 ---
 
-**Last updated**: 2026-06-11 (decisions formalized + structure scaffolded)
+**Latest Session Handoff** (2026-06-12, end of day)
+- Completed StorageClass reconciliation (`local-data` reclaim_policy now `Retain`).
+- Fixed root outputs — `terraform output node_names` now works directly and returns `["nuc8-hades"]`.
+- Created dedicated `docs/SESSION-HANDOFF.md` + improved continuity protocol.
+- Still in the middle of the Terraform learning walkthrough (`docs/apply.md`).
+- **Next when resuming**: Read `docs/SESSION-HANDOFF.md` first, then finish Step 4 + Step 5 experiments.
+
+**Last updated**: 2026-06-12 (end of day - created dedicated SESSION-HANDOFF.md)
 
 *This document should be updated whenever major decisions are made or the status changes.*

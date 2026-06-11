@@ -20,4 +20,4 @@ __pycache__/
 .vscode/
 
 # Docs
-docs/apply.md
+#docs/apply.md
