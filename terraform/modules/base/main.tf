@@ -100,26 +100,16 @@ resource "kubernetes_storage_class_v1" "local_data" {
   # the first time you run terraform apply it may complain that the object exists
   # but is not managed by Terraform.
   #
-  # Two common ways to handle this (we'll use the second for now):
+  # Best long-term approach (Q2 reprovisioning):
+  #   terraform import 'module.base.kubernetes_storage_class_v1.local_data' local-data
   #
-  # Option A (import - best long term):
-  #   terraform import module.base.kubernetes_storage_class_v1.local_data local-data
-  #
-  # Option B (lifecycle rule - quick and safe for learning):
-  #   Tell Terraform "never destroy this, and if the configuration drifts,
-  #   don't try to fix it on the first run".
-  #
-  # For your first run we will include a lifecycle block that is educational.
-  # After you see it working we can clean it up or do a proper import.
+  # We keep prevent_destroy as a temporary safety net during the learning/adoption phase.
+  # Once imported and you've reviewed the diff, we can remove or adjust it.
 
   lifecycle {
     # prevent_destroy is a great guardrail while learning.
     # It will stop you from accidentally deleting the StorageClass (and potentially losing data references).
     prevent_destroy = true
-
-    # ignore_changes can be used if there are fields the cluster adds automatically
-    # that you don't want to fight about.
-    # ignore_changes = []
   }
 }
 
@@ -156,10 +146,17 @@ resource "kubernetes_namespace_v1" "base" {
   metadata {
     name = each.value
 
-    labels = {
-      "homelab.nuc8-hades/managed-by" = "terraform"
-      "homelab.nuc8-hades/purpose"    = "base"
-    }
+    labels = merge(
+      {
+        "homelab.nuc8-hades/managed-by" = "terraform"
+        "homelab.nuc8-hades/purpose"    = "base"
+      },
+      # Keep the control-plane label that the AWX operator expects.
+      # This prevents Terraform from trying to remove it on every plan.
+      # (We observed this label during import and chose to include it
+      # in desired state rather than ignore_changes.)
+      each.value == "awx" ? { "control-plane" = "controller-manager" } : {}
+    )
 
     annotations = {
       "homelab.nuc8-hades/description" = "Created by the base Terraform module as part of homelab foundation."
